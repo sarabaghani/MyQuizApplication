@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Quiz Application</string>
+    <string name="question_txt">تهران پایتخت ایران است؟</string>
+    <string name="button_false">نادرست</string>
+    <string name="button_true">درست</string>
+    <string name="true_toast">جواب شما صحیح است</string>
+    <string name="false_toast">جواب شما غلط است</string>
+</resources>
