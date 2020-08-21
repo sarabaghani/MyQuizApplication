@@ -1,12 +1,16 @@
-package com.example.myquizapplication;
+package com.example.myquizapplication.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.myquizapplication.R;
+import com.example.myquizapplication.models.Question;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -105,8 +109,9 @@ checkAns(false);
             @Override
             public void onClick(View view) {
                 mIndex = mIndex - 1;
-                if (mIndex < 0)
-                    mIndex = mQuestions.length - 1;
+                mIndex=(mIndex+mQuestions.length)%mQuestions.length;
+/*                if (mIndex < 0)
+                    mIndex = mQuestions.length - 1;*/
                 updateQuestion();
             }
         });
@@ -119,7 +124,8 @@ checkAns(false);
             toast.show();
             mScore+=1;
             Toast score=Toast.makeText(QuizActivity.this, "your score is: "+mScore, Toast.LENGTH_LONG);
-            score.setGravity(48,0,0);
+            score.setGravity(60,0,0);
+            score.getView().setBackgroundColor(Color.rgb(146,110,174));
             score.show();
         }
         else {

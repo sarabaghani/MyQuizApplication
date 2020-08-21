@@ -1,4 +1,4 @@
-package com.example.myquizapplication;
+package com.example.myquizapplication.models;
 
 public class Question {
     private String mTxt;

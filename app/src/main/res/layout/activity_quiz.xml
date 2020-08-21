@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".QuizActivity">
+    tools:context=".controller.QuizActivity">
 
     <TextView
         android:id="@+id/question_txt"
@@ -51,12 +51,13 @@
             android:id="@+id/first_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="empty" />
+            android:drawableLeft="@drawable/ic_dleft_arrow" />
 
         <Button
             android:id="@+id/prev_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_left_arrow"
             android:text="@string/button_prev"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -65,6 +66,7 @@
             android:id="@+id/next_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_right_arrow"
             android:text="@string/button_next"
             android:textSize="24sp"
             android:textStyle="bold" />
