@@ -8,7 +8,7 @@ public class Question {
     public Question() {
     }
 
-    public Question(boolean ans, int quesResId) {
+    public Question(int quesResId,boolean ans) {
         mAns = ans;
         mQuesResId = quesResId;
     }
