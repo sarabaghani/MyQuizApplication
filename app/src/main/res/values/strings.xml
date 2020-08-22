@@ -14,5 +14,7 @@
     <string name="question_asia">قاره آسیا در نیم کره جنوبی جهان واقع شده است.</string>
     <string name="button_next">بعدی</string>
     <string name="button_prev">قبلی</string>
+    <string name="game_over">GAME OVER !!</string>
 
+    <string name="final_score">Your Score Is: </string>
 </resources>
