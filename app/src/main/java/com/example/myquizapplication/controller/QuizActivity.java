@@ -1,9 +1,12 @@
 package com.example.myquizapplication.controller;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,6 +22,13 @@ import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
+    public static final String TAG = "QuizActivityTag";
+    private static final String BUNDLE_KEY_MY_CURRENT_INDEX = "my current index : ";
+    private static final String BUNDLE_KEY_MY_SCORE = "myScore";
+    private static final String BUNDLE_KEY_ANSWERED_LIST = "answeredList";
+    public static final String MAIN_LAYOUT_VISIBILITY = "main layout visibility";
+    public static final String GAMEOVER_LAYOUT_VISIBILITY = "gameover layout visibility";
+
     private ImageButton mTrueBtn;
     private ImageButton mFalseBtn;
     private TextView mTextViewQuestion;
@@ -26,12 +36,14 @@ public class QuizActivity extends AppCompatActivity {
     private Button mButtonPrev;
     private ImageButton mButtonFirst;
     private ImageButton mButtonLast;
-    List<Integer> mClickedList = new ArrayList<Integer>();
+    ArrayList<Integer> mAnsweredList = new ArrayList<Integer>();
     private TextView mScoreBoard;
     private TextView mUserScore;
     private ImageButton mButtonReset;
     LinearLayout gameOverLay;
     LinearLayout mainLay;
+    private int mainVisibility;
+    private int gameVisibility;
     private int mScore = 0;
 
     private int mIndex = 0;
@@ -48,13 +60,22 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+//            mIndex= savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX);
+            mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX, 0);
+            mScore = savedInstanceState.getInt(BUNDLE_KEY_MY_SCORE);
+            mAnsweredList = savedInstanceState.getIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST);
+
+        }
+
+        Log.d(TAG, "saved state: " + savedInstanceState);
+        Log.d(TAG, "i'm on create!");
         setContentView(R.layout.activity_quiz);
         findViews();
         setListeners();
-
         updateQuestion();
-
-
+        displayGameoverLayout();
+        gameoverContents();
 
 /*        //making view by code manually
         LinearLayout linearLayout = new LinearLayout(this);
@@ -65,6 +86,46 @@ public class QuizActivity extends AppCompatActivity {
         textView.setTextColor(Color.rgb(238,130,238));
         linearLayout.addView(textView);
         setContentView(linearLayout);*/
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "i'm on start!");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "i'm on resume! ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "i'm on pause! ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "i'm on stop! ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "i'm on destroy! ");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //alave bar chizhayi k khode os save karde dar bala, ma ham mitavanim be an ezafe konim:
+        outState.putInt(BUNDLE_KEY_MY_CURRENT_INDEX, mIndex);
+        outState.putInt(BUNDLE_KEY_MY_SCORE, mScore);
+        outState.putIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST, mAnsweredList);
+        Log.d(TAG, "onSavedInstanceState: " + mIndex);
     }
 
     private void setListeners() {
@@ -149,7 +210,7 @@ public class QuizActivity extends AppCompatActivity {
                 gameOverLay.setVisibility(View.GONE);
                 mainLay.setVisibility(View.VISIBLE);
                 mScore = 0;
-                mClickedList.clear();
+                mAnsweredList.clear();
                 mIndex = 0;
                 updateQuestion();
                 mTrueBtn.setEnabled(true);
@@ -176,10 +237,18 @@ public class QuizActivity extends AppCompatActivity {
         }
         mFalseBtn.setEnabled(false);
         mTrueBtn.setEnabled(false);
-        mClickedList.add(mIndex);
+        mAnsweredList.add(mIndex);
+        gameoverContents();
+        displayGameoverLayout();
+    }
+
+    private void gameoverContents() {
         mScoreBoard.setText(R.string.final_score);
         mUserScore.setText((String.valueOf(mScore)));
-        if (mClickedList.size() == mQuestions.length) {
+    }
+
+    private void displayGameoverLayout() {
+        if (mAnsweredList.size() == mQuestions.length) {
             gameOverLay.setVisibility(View.VISIBLE);
             mainLay.setVisibility(View.GONE);
         } else {
@@ -190,7 +259,7 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int questionTxtResId = mQuestions[mIndex].getQuesResId();
         mTextViewQuestion.setText(questionTxtResId);
-        if (mClickedList.contains(mIndex)) {
+        if (mAnsweredList.contains(mIndex)) {
             mFalseBtn.setEnabled(false);
             mTrueBtn.setEnabled(false);
         } else {
