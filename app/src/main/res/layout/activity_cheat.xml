@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#A33131"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".controller.CheatActivity">
+
+    <TextView
+        android:id="@+id/textView_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/warning_txt"
+        android:textColor="#120000"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:textColor="#120000"
+        android:textSize="24sp"
+        tools:text="جواب درست " />
+
+    <Button
+        android:id="@+id/show_ans_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FF9800"
+        android:text="@string/show_answer_btn"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+</LinearLayout>
