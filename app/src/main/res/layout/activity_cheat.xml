@@ -25,8 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="8dp"
-        android:textColor="#120000"
-        android:textSize="24sp"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="36sp"
+        android:textStyle="bold"
         tools:text="جواب درست " />
 
     <Button
@@ -37,4 +38,5 @@
         android:text="@string/show_answer_btn"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
+
 </LinearLayout>

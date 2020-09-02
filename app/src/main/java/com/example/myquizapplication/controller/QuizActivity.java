@@ -30,6 +30,7 @@ public class QuizActivity extends AppCompatActivity {
     private static final String BUNDLE_KEY_ANSWERED_LIST = "answeredList";
     public static final String MAIN_LAYOUT_VISIBILITY = "main layout visibility";
     public static final String GAMEOVER_LAYOUT_VISIBILITY = "gameover layout visibility";
+    public static final String EXTRA_QUESTION_ANSWER = "QuestionAnswer";
 
     private ImageButton mTrueBtn;
     private ImageButton mFalseBtn;
@@ -226,6 +227,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(QuizActivity.this, CheatActivity.class
                 );
+                intent.putExtra(EXTRA_QUESTION_ANSWER, mQuestions[mIndex].isAns());
                 startActivity(intent);
             }
         });
