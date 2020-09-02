@@ -4,11 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
-import android.nfc.Tag;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +19,6 @@ import com.example.myquizapplication.R;
 import com.example.myquizapplication.models.Question;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -40,11 +40,12 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mScoreBoard;
     private TextView mUserScore;
     private ImageButton mButtonReset;
-    LinearLayout gameOverLay;
-    LinearLayout mainLay;
+    View gameOverLay;
+    View mainLay;
     private int mainVisibility;
     private int gameVisibility;
     private int mScore = 0;
+
 
     private int mIndex = 0;
     private Question[] mQuestions = {
