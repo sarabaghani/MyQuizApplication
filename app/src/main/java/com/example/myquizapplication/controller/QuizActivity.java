@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -40,11 +41,12 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mScoreBoard;
     private TextView mUserScore;
     private ImageButton mButtonReset;
-    View gameOverLay;
-    View mainLay;
+    ViewGroup gameOverLay;
+    ViewGroup mainLay;
     private int mainVisibility;
     private int gameVisibility;
     private int mScore = 0;
+    private Button mButtonCheat;
 
 
     private int mIndex = 0;
@@ -71,7 +73,7 @@ public class QuizActivity extends AppCompatActivity {
 
         Log.d(TAG, "saved state: " + savedInstanceState);
         Log.d(TAG, "i'm on create!");
-        setContentView(R.layout.activity_quiz);
+        setContentView(R.layout.activity_quiz); //this one should be the first thi  ng to do in onCreate method!!!!
         findViews();
         setListeners();
         updateQuestion();
@@ -218,6 +220,12 @@ public class QuizActivity extends AppCompatActivity {
                 mFalseBtn.setEnabled(true);
             }
         });
+        mButtonCheat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //todo
+            }
+        });
 
     }
 
@@ -282,6 +290,7 @@ public class QuizActivity extends AppCompatActivity {
         mButtonReset = findViewById(R.id.reset_btn);
         mainLay = findViewById(R.id.main_layout);
         gameOverLay = findViewById(R.id.game_over_lay);
+        mButtonCheat = findViewById(R.id.cheat_btn);
     }
 
 }

@@ -16,5 +16,7 @@
     <string name="button_prev">قبلی</string>
     <string name="game_over">GAME OVER !!</string>
 
+    <string name="button_cheat">تقلب</string>
+
     <string name="final_score">Your Score Is: </string>
 </resources>
