@@ -1,19 +1,19 @@
 package com.example.myquizapplication.controller;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +21,24 @@ import com.example.myquizapplication.R;
 import com.example.myquizapplication.models.Question;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class QuizActivity extends AppCompatActivity {
 
     public static final String TAG = "QuizActivityTag";
+    public static final int REQUEST_CODE_CHEAT = 0;
+    public static final int REQUEST_CODE_SETTING = 1;
     private static final String BUNDLE_KEY_MY_CURRENT_INDEX = "my current index : ";
     private static final String BUNDLE_KEY_MY_SCORE = "myScore";
     private static final String BUNDLE_KEY_ANSWERED_LIST = "answeredList";
+    public static final String BUNDLE_FONT_SIZE = "bundle font size";
+    public static final String BUNDLE_BACKGROUND = "bundle background";
     public static final String MAIN_LAYOUT_VISIBILITY = "main layout visibility";
     public static final String GAMEOVER_LAYOUT_VISIBILITY = "gameover layout visibility";
-    public static final String EXTRA_QUESTION_ANSWER = "QuestionAnswer";
+    public static final String EXTRA_QUESTION_ANSWER = "com.example.myquizapplication.QuestionAnswer";
+    public static final String BUNDLE_MAIN_BACKGROUND = "bundle main background";
+    public static final String BUNDLE_MAIN_FONT_SIZE = "bundle main font size";
+    public static final String BUNDLE_IS_CHEAT = "bundle is cheat";
 
     private ImageButton mTrueBtn;
     private ImageButton mFalseBtn;
@@ -49,6 +57,13 @@ public class QuizActivity extends AppCompatActivity {
     private int gameVisibility;
     private int mScore = 0;
     private Button mButtonCheat;
+    private ImageButton mButtonSetting;
+    private boolean mIsCheater = false;
+    //setting
+    private int mFontSize;//=20
+    private int mFontSize2;
+    private String mBackColor;//= "#C4B7DC"
+    private String mBackColor2;
 
 
     private int mIndex = 0;
@@ -70,17 +85,32 @@ public class QuizActivity extends AppCompatActivity {
             mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX, 0);
             mScore = savedInstanceState.getInt(BUNDLE_KEY_MY_SCORE);
             mAnsweredList = savedInstanceState.getIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST);
+            mBackColor2=savedInstanceState.getString(BUNDLE_BACKGROUND);
+            mFontSize2=savedInstanceState.getInt(BUNDLE_FONT_SIZE);
+            mFontSize=savedInstanceState.getInt(BUNDLE_MAIN_FONT_SIZE);
+            mBackColor=savedInstanceState.getString(BUNDLE_MAIN_BACKGROUND);
+            mIsCheater=savedInstanceState.getBoolean(BUNDLE_IS_CHEAT);
 
         }
 
         Log.d(TAG, "saved state: " + savedInstanceState);
         Log.d(TAG, "i'm on create!");
-        setContentView(R.layout.activity_quiz); //this one should be the first thi  ng to do in onCreate method!!!!
+        setContentView(R.layout.activity_quiz); //this one should be the first thing to do in onCreate method!!!!
         findViews();
         setListeners();
         updateQuestion();
         displayGameoverLayout();
         gameoverContents();
+        if(savedInstanceState==null)
+        mFontSize = 20;
+        mFontSize2 = mFontSize;
+        mTextViewQuestion.setTextSize(mFontSize);
+        if(savedInstanceState==null)
+        mBackColor = "#C4B7DC";
+        mBackColor2 = mBackColor;
+        mainLay.setBackgroundColor(Color.parseColor(mBackColor));
+
+
 
 /*        //making view by code manually
         LinearLayout linearLayout = new LinearLayout(this);
@@ -97,12 +127,28 @@ public class QuizActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "i'm on start!");
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "i'm on resume! ");
+        mainLay.setBackgroundColor(Color.parseColor(mBackColor2));
+        mTextViewQuestion.setTextSize(mFontSize2);
+
+/*        if (mBackColor != null)
+            mainLay.setBackgroundColor(Color.parseColor(mBackColor));
+        else {
+            mBackColor = "#C4B7DC";
+            mainLay.setBackgroundColor(Color.parseColor(mBackColor));
+        }
+        if (mFontSize != 0)
+            mTextViewQuestion.setTextSize(mFontSize);
+        else {
+            mFontSize = 20;
+            mTextViewQuestion.setTextSize(mFontSize);
+        }*/
     }
 
     @Override
@@ -130,7 +176,40 @@ public class QuizActivity extends AppCompatActivity {
         outState.putInt(BUNDLE_KEY_MY_CURRENT_INDEX, mIndex);
         outState.putInt(BUNDLE_KEY_MY_SCORE, mScore);
         outState.putIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST, mAnsweredList);
+        outState.putInt(BUNDLE_FONT_SIZE,mFontSize2);
+        outState.putString(BUNDLE_BACKGROUND, mBackColor2);
+        outState.putInt(BUNDLE_MAIN_FONT_SIZE,mFontSize);
+        outState.putString(BUNDLE_MAIN_BACKGROUND,mBackColor);
+        outState.putBoolean(BUNDLE_IS_CHEAT,mIsCheater);
+
         Log.d(TAG, "onSavedInstanceState: " + mIndex);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK || data == null)
+            return;
+
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_IS_CHEAT, false);
+        }
+        if (requestCode == REQUEST_CODE_SETTING) {
+            mFontSize = data.getIntExtra(SettingActivity.EXTRA_SIZE, 0);
+            if (mFontSize != 0)
+                mFontSize2 = mFontSize;
+            mBackColor = data.getStringExtra(SettingActivity.EXTRA_BACK);
+            if (mBackColor != null)
+                mBackColor2 = mBackColor;
+            mTrueBtn.setVisibility(data.getIntExtra(SettingActivity.EXTRA_TRUE_STATUS, 0));
+            mFalseBtn.setVisibility(data.getIntExtra(SettingActivity.EXTRA_FALSE_STATUS, 0));
+            mButtonPrev.setVisibility(data.getIntExtra(SettingActivity.EXTRA_PREV_STATUS, 0));
+            mButtonNext.setVisibility(data.getIntExtra(SettingActivity.EXTRA_NEXT_STATUS, 0));
+            mButtonFirst.setVisibility(data.getIntExtra(SettingActivity.EXTRA_FIRST_STATUS, 0));
+            mButtonLast.setVisibility(data.getIntExtra(SettingActivity.EXTRA_LAST_STATUS, 0));
+            mButtonCheat.setVisibility(data.getIntExtra(SettingActivity.EXTRA_CHEAT_STATUS, 0));
+        }
+//        mainLay.setBackgroundColor(Color.parseColor(mBackColor));
     }
 
     private void setListeners() {
@@ -220,6 +299,10 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion();
                 mTrueBtn.setEnabled(true);
                 mFalseBtn.setEnabled(true);
+                //layout background color review : (3 ways)
+//                mainLay.setBackgroundColor(656454521);
+//                int greenColorValue = Color.parseColor("#00ff00")
+//                mainLay.setBackgroundColor(Color.parseColor("#00ff00"));
             }
         });
         mButtonCheat.setOnClickListener(new View.OnClickListener() {
@@ -228,26 +311,39 @@ public class QuizActivity extends AppCompatActivity {
                 Intent intent = new Intent(QuizActivity.this, CheatActivity.class
                 );
                 intent.putExtra(EXTRA_QUESTION_ANSWER, mQuestions[mIndex].isAns());
-                startActivity(intent);
+//                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
+        mButtonSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuizActivity.this, SettingActivity.class
+                );
+                startActivityForResult(intent, REQUEST_CODE_SETTING);
+            }
 
+        });
     }
 
     private void checkAns(boolean userPressed) {
-        if (mQuestions[mIndex].isAns() == userPressed) {
-            Toast toast = Toast.makeText(QuizActivity.this, R.string.true_toast, Toast.LENGTH_SHORT
-            );
-            toast.show();
-            mScore += 1;
-            Toast score = Toast.makeText(QuizActivity.this, "your score is: " + mScore, Toast.LENGTH_LONG);
-            score.setGravity(60, 0, 0);
-            score.getView().setBackgroundColor(Color.rgb(146, 110, 174));
-            score.show();
-        } else {
-            Toast toast = Toast.makeText(QuizActivity.this, R.string.false_toast, Toast.LENGTH_SHORT
-            );
-            toast.show();
+        if (mIsCheater)
+            Toast.makeText(this, R.string.cheat_warner, Toast.LENGTH_SHORT).show();
+        else {
+            if (mQuestions[mIndex].isAns() == userPressed) {
+                Toast toast = Toast.makeText(QuizActivity.this, R.string.true_toast, Toast.LENGTH_SHORT
+                );
+                toast.show();
+                mScore += 1;
+                Toast score = Toast.makeText(QuizActivity.this, "your score is: " + mScore, Toast.LENGTH_LONG);
+                score.setGravity(60, 0, 0);
+                score.getView().setBackgroundColor(Color.rgb(146, 110, 174));
+                score.show();
+            } else {
+                Toast toast = Toast.makeText(QuizActivity.this, R.string.false_toast, Toast.LENGTH_SHORT
+                );
+                toast.show();
+            }
         }
         mFalseBtn.setEnabled(false);
         mTrueBtn.setEnabled(false);
@@ -280,6 +376,7 @@ public class QuizActivity extends AppCompatActivity {
             mTrueBtn.setEnabled(true);
             mFalseBtn.setEnabled(true);
         }
+        mIsCheater = false;
     }
 
     private void findViews() {
@@ -296,6 +393,7 @@ public class QuizActivity extends AppCompatActivity {
         mainLay = findViewById(R.id.main_layout);
         gameOverLay = findViewById(R.id.game_over_lay);
         mButtonCheat = findViewById(R.id.cheat_btn);
+        mButtonSetting = findViewById(R.id.setting_btn);
     }
 
 }

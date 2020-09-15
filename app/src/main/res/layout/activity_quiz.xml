@@ -13,17 +13,27 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#C4B7DC"
-        android:gravity="center"
         android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/setting_btn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="right|top"
+            android:layout_margin="10dp"
+            android:gravity="right|top"
+            android:src="@drawable/setting_ic"
+            android:text="Button"
+            android:tint="@android:color/black" />
 
         <TextView
             android:id="@+id/question_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
             android:padding="8dp"
             android:textColor="#190202"
-            android:textSize="20sp"
             android:textStyle="bold"
             tools:text="this is test !!!" />
 
@@ -31,6 +41,7 @@
             android:id="@+id/lay1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <ImageButton
@@ -55,6 +66,7 @@
             android:id="@+id/lay2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="horizontal">
 
             <ImageButton
@@ -98,6 +110,7 @@
             android:id="@+id/cheat_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/button_cheat"
             android:textColor="#5E036E"
             android:textSize="24sp"

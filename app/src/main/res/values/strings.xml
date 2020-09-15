@@ -21,4 +21,20 @@
     <string name="final_score">Your Score Is: </string>
     <string name="warning_txt">آیا مطمئنید می خواهید تقلب کنید؟</string>
     <string name="show_answer_btn">نمایش تقلب</string>
+    <string name="cheat_warner">تقلب کار بدیه !</string>
+    <string name="font_size_txt">اندازه متن : </string>
+    <string name="medium_font_size">متوسط</string>
+    <string name="normal_font_size">پیش فرض</string>
+    <string name="large_font_size">بزرگ</string>
+    <string name="small_font_size">کوچک</string>
+    <string name="save_btn">ذخیره</string>
+    <string name="discard_btn">لغو</string>
+    <string name="cheat_hide">تقلب</string>
+    <string name="last_hide">اخرين</string>
+    <string name="prev_hide">قبلي</string>
+    <string name="next_hide">بعدي</string>
+    <string name="first_hide">اولين</string>
+    <string name="false_hide">غلط</string>
+    <string name="true_hide">صحيح</string>
+    <string name="hide_txt">نمايش دادن/ پنهان كردن دكمه ها:</string>
 </resources>

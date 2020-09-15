@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.myquizapplication.R;
 
 public class CheatActivity extends AppCompatActivity {
+    public static final String EXTRA_IS_CHEAT = " com.example.myquizapplication.isCheat";
     private boolean mIsAnsTrue;
     private TextView mTextViewAnswer;
     private Button mButtonShowAns;
@@ -34,8 +35,15 @@ public class CheatActivity extends AppCompatActivity {
                     mTextViewAnswer.setText(R.string.button_true);
                 else
                     mTextViewAnswer.setText(R.string.button_false);
+                cheatReport(true);
             }
         });
+    }
+
+    private void cheatReport(boolean isCheat) {
+        Intent data = new Intent();
+        data.putExtra(EXTRA_IS_CHEAT, isCheat);
+        setResult(RESULT_OK , data);
     }
 
     private void findViews() {
