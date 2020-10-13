@@ -1,18 +1,47 @@
 package com.example.myquizapplication.controller;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
+import com.example.myquizapplication.controller.CheatActivity;
+import com.example.myquizapplication.controller.QuizActivity;
+import com.example.myquizapplication.controller.SettingActivity;
+import com.example.myquizapplication.models.Question;
+
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myquizapplication.R;
+import com.example.myquizapplication.models.Question;
 
-public class QuizActivity extends AppCompatActivity {
-    public static final String TAG = "QuizActivityTag";
-    public static final String EXTRA_QUESTION_ANSWER = "com.example.myquizapplication.QuestionAnswer";
-/*
+import java.util.ArrayList;
+
+
+public class QuizFragment extends Fragment {
+
     public static final String TAG = "QuizActivityTag";
     public static final int REQUEST_CODE_CHEAT = 0;
     public static final int REQUEST_CODE_SETTING = 1;
@@ -62,134 +91,115 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_africa, true),
             new Question(R.string.question_americas, false),
             new Question(R.string.question_asia, false),
-    };*/
+    };
+
+    public QuizFragment() {
+        // Required empty public constructor
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.frgament_container);
-        QuizFragment quizFragment = new QuizFragment();
-if(fragment == null){
-    fragmentManager.beginTransaction().
-            add(R.id.frgament_container, quizFragment)
-            .commit();
-}
-/*        if (savedInstanceState != null) {
+       /* if (savedInstanceState != null) {
 //            mIndex= savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX);
             mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX, 0);
             mScore = savedInstanceState.getInt(BUNDLE_KEY_MY_SCORE);
             mAnsweredList = savedInstanceState.getIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST);
-            mBackColor2=savedInstanceState.getString(BUNDLE_BACKGROUND);
-            mFontSize2=savedInstanceState.getInt(BUNDLE_FONT_SIZE);
-            mFontSize=savedInstanceState.getInt(BUNDLE_MAIN_FONT_SIZE);
-            mBackColor=savedInstanceState.getString(BUNDLE_MAIN_BACKGROUND);
-            mIsCheater=savedInstanceState.getBoolean(BUNDLE_IS_CHEAT);
+            mBackColor2 = savedInstanceState.getString(BUNDLE_BACKGROUND);
+            mFontSize2 = savedInstanceState.getInt(BUNDLE_FONT_SIZE);
+            mFontSize = savedInstanceState.getInt(BUNDLE_MAIN_FONT_SIZE);
+            mBackColor = savedInstanceState.getString(BUNDLE_MAIN_BACKGROUND);
+            mIsCheater = savedInstanceState.getBoolean(BUNDLE_IS_CHEAT);
 
-        }
+        }*/
 
         Log.d(TAG, "saved state: " + savedInstanceState);
         Log.d(TAG, "i'm on create!");
-        setContentView(R.layout.activity_quiz); //this one should be the first thing to do in onCreate method!!!!
-        findViews();
+//        setContentView(R.layout.activity_quiz); //this one should be the first thing to do in onCreate method!!!!
+//        findViews();
+   /*     setListeners();
+        updateQuestion();
+        displayGameoverLayout();
+        gameoverContents();
+        if (savedInstanceState == null)
+            mFontSize = 20;
+        mFontSize2 = mFontSize;
+        mTextViewQuestion.setTextSize(mFontSize);
+        if (savedInstanceState == null)
+            mBackColor = "#C4B7DC";
+        mBackColor2 = mBackColor;
+        mainLay.setBackgroundColor(Color.parseColor(mBackColor));*/
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_quiz, container, false);
+        if (savedInstanceState != null) {
+            mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX);
+//            mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX, 0);
+            mScore = savedInstanceState.getInt(BUNDLE_KEY_MY_SCORE);
+            mAnsweredList = savedInstanceState.getIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST);
+            mBackColor2 = savedInstanceState.getString(BUNDLE_BACKGROUND);
+            mFontSize2 = savedInstanceState.getInt(BUNDLE_FONT_SIZE);
+            mFontSize = savedInstanceState.getInt(BUNDLE_MAIN_FONT_SIZE);
+            mBackColor = savedInstanceState.getString(BUNDLE_MAIN_BACKGROUND);
+            mIsCheater = savedInstanceState.getBoolean(BUNDLE_IS_CHEAT);
+
+        }
+        findViews(view);
         setListeners();
         updateQuestion();
         displayGameoverLayout();
         gameoverContents();
-        if(savedInstanceState==null)
-        mFontSize = 20;
-        mFontSize2 = mFontSize;
-        mTextViewQuestion.setTextSize(mFontSize);
-        if(savedInstanceState==null)
-        mBackColor = "#C4B7DC";
-        mBackColor2 = mBackColor;
-        mainLay.setBackgroundColor(Color.parseColor(mBackColor));*/
-
-
-//before
-/*        //making view by code manually
-        LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.setGravity(Gravity.CENTER);
-        TextView textView = new TextView(this);
-        textView.setText("Hello im sara");
-        textView.setTextSize(30);
-        textView.setTextColor(Color.rgb(238,130,238));
-        linearLayout.addView(textView);
-        setContentView(linearLayout);*/
+        if (savedInstanceState == null) {
+            mFontSize = 20;
+            mFontSize2 = mFontSize;
+            mTextViewQuestion.setTextSize(mFontSize);
+        }
+        if (savedInstanceState == null) {
+            mBackColor = "#C4B7DC";
+            mBackColor2 = mBackColor;
+            mainLay.setBackgroundColor(Color.parseColor(mBackColor));
+        }
+        return view;
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "i'm on start!");
-
-    }
-
-/*    @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         Log.d(TAG, "i'm on resume! ");
         mainLay.setBackgroundColor(Color.parseColor(mBackColor2));
-        mTextViewQuestion.setTextSize(mFontSize2);*/
-//before
-/*        if (mBackColor != null)
-            mainLay.setBackgroundColor(Color.parseColor(mBackColor));
-        else {
-            mBackColor = "#C4B7DC";
-            mainLay.setBackgroundColor(Color.parseColor(mBackColor));
-        }
-        if (mFontSize != 0)
-            mTextViewQuestion.setTextSize(mFontSize);
-        else {
-            mFontSize = 20;
-            mTextViewQuestion.setTextSize(mFontSize);
-        }*/
-//    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "i'm on pause! ");
+        mTextViewQuestion.setTextSize(mFontSize2);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "i'm on stop! ");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "i'm on destroy! ");
-    }
-
- /*   @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         //alave bar chizhayi k khode os save karde dar bala, ma ham mitavanim be an ezafe konim:
         outState.putInt(BUNDLE_KEY_MY_CURRENT_INDEX, mIndex);
         outState.putInt(BUNDLE_KEY_MY_SCORE, mScore);
         outState.putIntegerArrayList(BUNDLE_KEY_ANSWERED_LIST, mAnsweredList);
-        outState.putInt(BUNDLE_FONT_SIZE,mFontSize2);
+        outState.putInt(BUNDLE_FONT_SIZE, mFontSize2);
         outState.putString(BUNDLE_BACKGROUND, mBackColor2);
-        outState.putInt(BUNDLE_MAIN_FONT_SIZE,mFontSize);
-        outState.putString(BUNDLE_MAIN_BACKGROUND,mBackColor);
-        outState.putBoolean(BUNDLE_IS_CHEAT,mIsCheater);
+        outState.putInt(BUNDLE_MAIN_FONT_SIZE, mFontSize);
+        outState.putString(BUNDLE_MAIN_BACKGROUND, mBackColor);
+        outState.putBoolean(BUNDLE_IS_CHEAT, mIsCheater);
 
         Log.d(TAG, "onSavedInstanceState: " + mIndex);
-    }*/
+    }
 
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK || data == null)
             return;
 
         if (requestCode == REQUEST_CODE_CHEAT) {
-            mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_IS_CHEAT, false);
+            mIsCheater = data.getBooleanExtra(CheatFragment.EXTRA_IS_CHEAT, false);
         }
         if (requestCode == REQUEST_CODE_SETTING) {
             mFontSize = data.getIntExtra(SettingActivity.EXTRA_SIZE, 0);
@@ -207,26 +217,26 @@ if(fragment == null){
             mButtonCheat.setVisibility(data.getIntExtra(SettingActivity.EXTRA_CHEAT_STATUS, 0));
         }
 //        mainLay.setBackgroundColor(Color.parseColor(mBackColor));
-    }*/
+    }
 
-    /*private void setListeners() {
+    private void setListeners() {
         mTrueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkAns(true);
-                *//*Toast toast = Toast.makeText(QuizActivity.this, R.string.true_toast, Toast.LENGTH_SHORT
+                /*Toast toast = Toast.makeText(QuizActivity.this, R.string.true_toast, Toast.LENGTH_SHORT
                 );
                 toast.getView().setBackgroundColor(Color.GREEN);
 
                 //setting toast text size (i made it bigger)
                 ViewGroup group = (ViewGroup) toast.getView();
                 TextView messageTextView = (TextView) group.getChildAt(0);
-                messageTextView.setTextSize(30);*//*
+                messageTextView.setTextSize(30);*/
 
-                *//*Toast toastx = new Toast(QuizMainActivity.this);
+                /*Toast toastx = new Toast(QuizMainActivity.this);
                 ImageView viewx = new ImageView(QuizMainActivity.this);
                 viewx.setImageResource(R.drawable.true_toast_img);
-                toast.setView(viewx);*//*
+                toast.setView(viewx);*/
 
 //                toast.show();
 //                mTextViewQuestion.setTextColor(Color.rgb(0, 255, 0));
@@ -237,18 +247,18 @@ if(fragment == null){
             public void onClick(View view) {
                 checkAns(false);
 
-               *//* Toast toast = Toast.makeText(QuizActivity.this, R.string.false_toast, Toast.LENGTH_SHORT
+               /* Toast toast = Toast.makeText(QuizActivity.this, R.string.false_toast, Toast.LENGTH_SHORT
                 );
                 toast.setGravity(48, 0, 0);
                 toast.getView().setBackgroundColor(Color.RED);
                 ViewGroup group = (ViewGroup) toast.getView();
                 TextView messageTextView = (TextView) group.getChildAt(0);
-                messageTextView.setTextSize(30);*//*
+                messageTextView.setTextSize(30);*/
 
-                *//*Toast toastx = new Toast(QuizMainActivity.this);
+                /*Toast toastx = new Toast(QuizMainActivity.this);
                 ImageView viewx = new ImageView(QuizMainActivity.this);
                 viewx.setImageResource(R.drawable.false_toast_img);
-                toast.setView(viewx);*//*
+                toast.setView(viewx);*/
 //                toast.show();
 //                mTextViewQuestion.setTextColor(Color.rgb(255, 0, 0));
             }
@@ -266,8 +276,8 @@ if(fragment == null){
             public void onClick(View view) {
                 mIndex = mIndex - 1;
                 mIndex = (mIndex + mQuestions.length) % mQuestions.length;
-*//*                if (mIndex < 0)
-                    mIndex = mQuestions.length - 1;*//*
+/*                if (mIndex < 0)
+                    mIndex = mQuestions.length - 1;*/
                 updateQuestion();
             }
         });
@@ -305,7 +315,7 @@ if(fragment == null){
         mButtonCheat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QuizActivity.this, CheatActivity.class
+                Intent intent = new Intent(getActivity(), CheatActivity.class
                 );
                 intent.putExtra(EXTRA_QUESTION_ANSWER, mQuestions[mIndex].isAns());
 //                startActivity(intent);
@@ -315,29 +325,29 @@ if(fragment == null){
         mButtonSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QuizActivity.this, SettingActivity.class
+                Intent intent = new Intent(getActivity(), SettingActivity.class
                 );
                 startActivityForResult(intent, REQUEST_CODE_SETTING);
             }
 
         });
     }
-*/
-   /* private void checkAns(boolean userPressed) {
+
+    private void checkAns(boolean userPressed) {
         if (mIsCheater)
-            Toast.makeText(this, R.string.cheat_warner, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.cheat_warner, Toast.LENGTH_SHORT).show();
         else {
             if (mQuestions[mIndex].isAns() == userPressed) {
-                Toast toast = Toast.makeText(QuizActivity.this, R.string.true_toast, Toast.LENGTH_SHORT
+                Toast toast = Toast.makeText(getActivity(), R.string.true_toast, Toast.LENGTH_SHORT
                 );
                 toast.show();
                 mScore += 1;
-                Toast score = Toast.makeText(QuizActivity.this, "your score is: " + mScore, Toast.LENGTH_LONG);
+                Toast score = Toast.makeText(getActivity(), "your score is: " + mScore, Toast.LENGTH_LONG);
                 score.setGravity(60, 0, 0);
                 score.getView().setBackgroundColor(Color.rgb(146, 110, 174));
                 score.show();
             } else {
-                Toast toast = Toast.makeText(QuizActivity.this, R.string.false_toast, Toast.LENGTH_SHORT
+                Toast toast = Toast.makeText(getActivity(), R.string.false_toast, Toast.LENGTH_SHORT
                 );
                 toast.show();
             }
@@ -347,9 +357,9 @@ if(fragment == null){
         mAnsweredList.add(mIndex);
         gameoverContents();
         displayGameoverLayout();
-    }*/
+    }
 
-    /*private void gameoverContents() {
+    private void gameoverContents() {
         mScoreBoard.setText(R.string.final_score);
         mUserScore.setText((String.valueOf(mScore)));
     }
@@ -376,21 +386,20 @@ if(fragment == null){
         mIsCheater = false;
     }
 
-    private void findViews() {
-        mFalseBtn = findViewById(R.id.false_btn);
-        mTrueBtn = findViewById(R.id.true_btn);
-        mTextViewQuestion = findViewById(R.id.question_txt);
-        mButtonNext = findViewById(R.id.next_btn);
-        mButtonPrev = findViewById(R.id.prev_btn);
-        mButtonFirst = findViewById(R.id.first_btn);
-        mButtonLast = findViewById(R.id.last_btn);
-        mScoreBoard = findViewById(R.id.score_board);
-        mUserScore = findViewById(R.id.user_score);
-        mButtonReset = findViewById(R.id.reset_btn);
-        mainLay = findViewById(R.id.main_layout);
-        gameOverLay = findViewById(R.id.game_over_lay);
-        mButtonCheat = findViewById(R.id.cheat_btn);
-        mButtonSetting = findViewById(R.id.setting_btn);
-    }*/
-
+    private void findViews(View view) {
+        mFalseBtn = view.findViewById(R.id.false_btn);
+        mTrueBtn = view.findViewById(R.id.true_btn);
+        mTextViewQuestion = view.findViewById(R.id.question_txt);
+        mButtonNext = view.findViewById(R.id.next_btn);
+        mButtonPrev = view.findViewById(R.id.prev_btn);
+        mButtonFirst = view.findViewById(R.id.first_btn);
+        mButtonLast = view.findViewById(R.id.last_btn);
+        mScoreBoard = view.findViewById(R.id.score_board);
+        mUserScore = view.findViewById(R.id.user_score);
+        mButtonReset = view.findViewById(R.id.reset_btn);
+        mainLay = view.findViewById(R.id.main_layout);
+        gameOverLay = view.findViewById(R.id.game_over_lay);
+        mButtonCheat = view.findViewById(R.id.cheat_btn);
+        mButtonSetting = view.findViewById(R.id.setting_btn);
+    }
 }

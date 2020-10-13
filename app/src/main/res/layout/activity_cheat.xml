@@ -10,33 +10,10 @@
     android:padding="8dp"
     tools:context=".controller.CheatActivity">
 
-    <TextView
-        android:id="@+id/textView_warning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/warning_txt"
-        android:textColor="#120000"
-        android:textSize="24sp" />
+    <FrameLayout
+        android:id="@+id/cheat_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView_answer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:textColor="@android:color/holo_green_dark"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        tools:text="جواب درست " />
-
-    <Button
-        android:id="@+id/show_ans_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FF9800"
-        android:text="@string/show_answer_btn"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
-
+    </FrameLayout>
 </LinearLayout>

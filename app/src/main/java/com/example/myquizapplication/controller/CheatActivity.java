@@ -1,33 +1,39 @@
 package com.example.myquizapplication.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.myquizapplication.R;
 
 public class CheatActivity extends AppCompatActivity {
-    public static final String EXTRA_IS_CHEAT = " com.example.myquizapplication.isCheat";
+    /*public static final String EXTRA_IS_CHEAT = " com.example.myquizapplication.isCheat";
     private boolean mIsAnsTrue;
     private TextView mTextViewAnswer;
     private Button mButtonShowAns;
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
-        Intent startIntent = getIntent();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        CheatFragment cheatFragment = new CheatFragment();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.cheat_container);
+        if (fragment == null) {
+            fragmentManager.beginTransaction()
+                    .add(R.id.cheat_container, cheatFragment)
+                    .commit();
+        }
+       /* Intent startIntent = getIntent();
         mIsAnsTrue = startIntent.getBooleanExtra(QuizActivity.EXTRA_QUESTION_ANSWER,
                 false);
         findViews();
         setListeners();
-    }
+    }*/
 
-    private void setListeners() {
+   /* private void setListeners() {
         mButtonShowAns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +56,6 @@ public class CheatActivity extends AppCompatActivity {
         mTextViewAnswer = findViewById(R.id.textView_answer);
         mButtonShowAns = findViewById(R.id.show_ans_btn);
     }
+*/
 
-
-}
+    }}
