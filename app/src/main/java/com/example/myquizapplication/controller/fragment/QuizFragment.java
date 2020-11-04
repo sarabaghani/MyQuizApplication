@@ -1,4 +1,4 @@
-package com.example.myquizapplication.controller;
+package com.example.myquizapplication.controller.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,36 +8,26 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.myquizapplication.controller.CheatActivity;
-import com.example.myquizapplication.controller.QuizActivity;
-import com.example.myquizapplication.controller.SettingActivity;
+import com.example.myquizapplication.controller.activity.CheatActivity;
+import com.example.myquizapplication.controller.activity.SettingActivity;
 import com.example.myquizapplication.models.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myquizapplication.R;
-import com.example.myquizapplication.models.Question;
-
-import java.util.ArrayList;
+import com.example.myquizapplication.repository.QuizRepository;
 
 
 public class QuizFragment extends Fragment {
@@ -81,17 +71,21 @@ public class QuizFragment extends Fragment {
     private int mFontSize2;
     private String mBackColor;//= "#C4B7DC"
     private String mBackColor2;
-
-
+    //recently added and get in on create
+    private QuizRepository mRepository;
+    private List<Question> mQuestions;
     private int mIndex = 0;
-    private Question[] mQuestions = {
+   /* private Question[] mQuestions = {
             new Question(R.string.question_australia, false),
             new Question(R.string.question_oceans, true),
             new Question(R.string.question_mideast, false),
             new Question(R.string.question_africa, true),
             new Question(R.string.question_americas, false),
             new Question(R.string.question_asia, false),
-    };
+    };*/
+   //above comment:array mQuestions replaced with list mQuestions gotten from repository.
+
+
 
     public QuizFragment() {
         // Required empty public constructor
@@ -101,6 +95,9 @@ public class QuizFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mRepository = QuizRepository.getInstance();
+        mIndex = getActivity().getIntent().getIntExtra(ListFragment.EXTRA_QUESTION_INDEX,0);
+        mQuestions = mRepository.getQuestions();
        /* if (savedInstanceState != null) {
 //            mIndex= savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX);
             mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX, 0);
@@ -267,7 +264,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mIndex += 1;
-                mIndex = mIndex % mQuestions.length;
+                mIndex = mIndex % mQuestions.size();
                 updateQuestion();
             }
         });
@@ -275,7 +272,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mIndex = mIndex - 1;
-                mIndex = (mIndex + mQuestions.length) % mQuestions.length;
+                mIndex = (mIndex + mQuestions.size()) % mQuestions.size();
 /*                if (mIndex < 0)
                     mIndex = mQuestions.length - 1;*/
                 updateQuestion();
@@ -284,7 +281,7 @@ public class QuizFragment extends Fragment {
         mButtonLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mIndex = mQuestions.length - 1;
+                mIndex = mQuestions.size() - 1;
                 updateQuestion();
             }
         });
@@ -317,7 +314,7 @@ public class QuizFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), CheatActivity.class
                 );
-                intent.putExtra(EXTRA_QUESTION_ANSWER, mQuestions[mIndex].isAns());
+                intent.putExtra(EXTRA_QUESTION_ANSWER, mQuestions.get(mIndex).isAns());
 //                startActivity(intent);
                 startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
@@ -337,7 +334,7 @@ public class QuizFragment extends Fragment {
         if (mIsCheater)
             Toast.makeText(getActivity(), R.string.cheat_warner, Toast.LENGTH_SHORT).show();
         else {
-            if (mQuestions[mIndex].isAns() == userPressed) {
+            if (mQuestions.get(mIndex).isAns() == userPressed) {
                 Toast toast = Toast.makeText(getActivity(), R.string.true_toast, Toast.LENGTH_SHORT
                 );
                 toast.show();
@@ -365,7 +362,7 @@ public class QuizFragment extends Fragment {
     }
 
     private void displayGameoverLayout() {
-        if (mAnsweredList.size() == mQuestions.length) {
+        if (mAnsweredList.size() == mQuestions.size()) {
             gameOverLay.setVisibility(View.VISIBLE);
             mainLay.setVisibility(View.GONE);
         } else {
@@ -374,7 +371,7 @@ public class QuizFragment extends Fragment {
     }
 
     private void updateQuestion() {
-        int questionTxtResId = mQuestions[mIndex].getQuesResId();
+        int questionTxtResId = mQuestions.get(mIndex).getQuesResId();
         mTextViewQuestion.setText(questionTxtResId);
         if (mAnsweredList.contains(mIndex)) {
             mFalseBtn.setEnabled(false);

@@ -1,20 +1,22 @@
-package com.example.myquizapplication.controller;
+package com.example.myquizapplication.controller.activity;
 
-import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.myquizapplication.R;
+import com.example.myquizapplication.controller.fragment.CheatFragment;
 
-public class CheatActivity extends AppCompatActivity {
-    /*public static final String EXTRA_IS_CHEAT = " com.example.myquizapplication.isCheat";
-    private boolean mIsAnsTrue;
-    private TextView mTextViewAnswer;
-    private Button mButtonShowAns;
-*/
+public class CheatActivity extends SingleFragmentActivity {
     @Override
+    public Fragment createFragment() {
+        return new CheatFragment();
+    }}
+
+    /*public static final String EXTRA_IS_CHEAT = " com.example.myquizapplication.isCheat";
+        private boolean mIsAnsTrue;
+        private TextView mTextViewAnswer;
+        private Button mButtonShowAns;
+    */
+    //singleFragmentActivity extended.
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
@@ -25,7 +27,7 @@ public class CheatActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .add(R.id.cheat_container, cheatFragment)
                     .commit();
-        }
+        }*/
        /* Intent startIntent = getIntent();
         mIsAnsTrue = startIntent.getBooleanExtra(QuizActivity.EXTRA_QUESTION_ANSWER,
                 false);
@@ -58,4 +60,4 @@ public class CheatActivity extends AppCompatActivity {
     }
 */
 
-    }}
+//    }}

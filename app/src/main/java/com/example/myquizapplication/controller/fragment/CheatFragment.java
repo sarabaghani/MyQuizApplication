@@ -1,4 +1,4 @@
-package com.example.myquizapplication.controller;
+package com.example.myquizapplication.controller.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.myquizapplication.R;
+import com.example.myquizapplication.controller.activity.QuizActivity;
 
 
 public class CheatFragment extends Fragment {

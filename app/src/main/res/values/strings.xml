@@ -37,5 +37,8 @@
     <string name="false_hide">غلط</string>
     <string name="true_hide">صحيح</string>
     <string name="hide_txt">نمايش دادن/ پنهان كردن دكمه ها:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ans_chkbx">جواب</string>
 
 </resources>

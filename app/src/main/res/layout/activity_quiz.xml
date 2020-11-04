@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".controller.QuizActivity">
+    tools:context=".controller.activity.QuizActivity">
 
     <FrameLayout
         android:id="@+id/frgament_container"

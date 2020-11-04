@@ -1,15 +1,12 @@
-package com.example.myquizapplication.controller;
+package com.example.myquizapplication.controller.activity;
 
-import android.os.Bundle;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.myquizapplication.R;
+import com.example.myquizapplication.controller.fragment.QuizFragment;
 
-public class QuizActivity extends AppCompatActivity {
+public class QuizActivity extends SingleFragmentActivity {
     public static final String TAG = "QuizActivityTag";
     public static final String EXTRA_QUESTION_ANSWER = "com.example.myquizapplication.QuestionAnswer";
 /*
@@ -66,6 +63,11 @@ public class QuizActivity extends AppCompatActivity {
 
 
     @Override
+    public Fragment createFragment() {
+        return new QuizFragment();
+    }
+//singleFragmentActivity extended.
+/*    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
@@ -76,7 +78,8 @@ if(fragment == null){
     fragmentManager.beginTransaction().
             add(R.id.frgament_container, quizFragment)
             .commit();
-}
+}*/
+
 /*        if (savedInstanceState != null) {
 //            mIndex= savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX);
             mIndex = savedInstanceState.getInt(BUNDLE_KEY_MY_CURRENT_INDEX, 0);
@@ -118,7 +121,7 @@ if(fragment == null){
         textView.setTextColor(Color.rgb(238,130,238));
         linearLayout.addView(textView);
         setContentView(linearLayout);*/
-    }
+//    }
 
     @Override
     protected void onStart() {
